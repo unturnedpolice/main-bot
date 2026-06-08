@@ -1,50 +1,56 @@
-const {
-  Client,
-  GatewayIntentBits,
-  REST,
-  Routes,
-  SlashCommandBuilder
-} = require("discord.js");
+require('dotenv').config();
+
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { loadCommands } = require('./handlers/commandHandler');
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
-const commands = [
-  new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Checks if the bot is online.")
-    .toJSON()
-];
+client.commands = new Collection();
 
-client.once("clientReady", async () => {
-  console.log(`Logged in as ${client.user.tag}`);
-
-  const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
-
-  try {
-    console.log("Registering slash commands...");
-
-    await rest.put(
-      Routes.applicationGuildCommands(
-        process.env.CLIENT_ID,
-        process.env.GUILD_ID
-      ),
-      { body: commands }
-    );
-
-    console.log("Slash commands registered.");
-  } catch (error) {
-    console.error(error);
-  }
+client.once(Events.ClientReady, (readyClient) => {
+  console.log(`Logged in as ${readyClient.user.tag}`);
 });
 
-client.on("interactionCreate", async interaction => {
+client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === "ping") {
-    await interaction.reply("Pong! Bot is online.");
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) {
+    return interaction.reply({
+      content: 'This command was not found.',
+      ephemeral: true
+    });
+  }
+
+  try {
+    await command.execute(interaction, client);
+  } catch (error) {
+    console.error(`Error running /${interaction.commandName}:`, error);
+
+    const errorMessage = {
+      content: 'There was an error while running this command.',
+      ephemeral: true
+    };
+
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp(errorMessage);
+    } else {
+      await interaction.reply(errorMessage);
+    }
   }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+async function startBot() {
+  if (!process.env.DISCORD_TOKEN) {
+    console.error('Missing DISCORD_TOKEN in environment variables.');
+    process.exit(1);
+  }
+
+  await loadCommands(client);
+  await client.login(process.env.DISCORD_TOKEN);
+}
+
+startBot();

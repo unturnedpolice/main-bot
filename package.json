@@ -1,11 +1,13 @@
 {
-  "name": "department-discord-bot",
+  "name": "discord-department-management-bot",
   "version": "1.0.0",
+  "description": "Reusable Discord Department Management Bot template",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "discord.js": "^14.15.3"
+    "discord.js": "^14.0.0",
+    "dotenv": "^16.0.0"
   }
 }
