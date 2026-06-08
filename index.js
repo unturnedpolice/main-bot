@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { loadCommands } = require('./handlers/commandHandler.js');
+const { loadCommands } = require('./handlers/commandHandler');
+const { validateServerConfig } = require('./utils/configUtils');
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
