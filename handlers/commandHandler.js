@@ -4,6 +4,12 @@ const { REST, Routes } = require('discord.js');
 
 async function loadCommands(client) {
   const commandsPath = path.join(__dirname, '..', 'commands');
+
+  if (!fs.existsSync(commandsPath)) {
+    console.error('Missing commands folder. Expected folder: commands/');
+    return;
+  }
+
   const commandFiles = fs
     .readdirSync(commandsPath)
     .filter((file) => file.endsWith('.js'));
