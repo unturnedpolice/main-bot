@@ -16,14 +16,30 @@ module.exports = {
   },
 
   ranks: [
-    // We will fill this in during the rank detection step.
-    // Example:
-    // {
-    //   name: 'Officer',
-    //   rankRoleId: 'ROLE_ID_HERE',
-    //   permissionRoleId: 'ROLE_ID_HERE',
-    //   level: 1
-    // }
+    {
+      name: 'Cadet',
+      rankRoleId: 'PASTE_CADET_ROLE_ID_HERE',
+      permissionRoleId: 'PASTE_CADET_PERMISSION_ROLE_ID_HERE',
+      level: 1
+    },
+    {
+      name: 'Officer',
+      rankRoleId: 'PASTE_OFFICER_ROLE_ID_HERE',
+      permissionRoleId: 'PASTE_OFFICER_PERMISSION_ROLE_ID_HERE',
+      level: 2
+    },
+    {
+      name: 'Corporal',
+      rankRoleId: 'PASTE_CORPORAL_ROLE_ID_HERE',
+      permissionRoleId: 'PASTE_CORPORAL_PERMISSION_ROLE_ID_HERE',
+      level: 3
+    },
+    {
+      name: 'Sergeant',
+      rankRoleId: 'PASTE_SERGEANT_ROLE_ID_HERE',
+      permissionRoleId: 'PASTE_SERGEANT_PERMISSION_ROLE_ID_HERE',
+      level: 4
+    }
   ],
 
   google: {
